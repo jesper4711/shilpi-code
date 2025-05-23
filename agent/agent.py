@@ -50,7 +50,7 @@ class Agent:
             try:
                 # print(f"DEBUG: Sending to Claude: {json.dumps(self.conversation, indent=2)}") # For debugging
                 response = self.anthropic_client.messages.create(
-                    model="claude-3-sonnet-20240229",
+                    model="claude-3-5-sonnet-20240620",
                     max_tokens=2048, # Increased max_tokens slightly just in case
                     messages=self.conversation,
                     tools=self.anthropic_tools(),
