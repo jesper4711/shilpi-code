@@ -1,7 +1,7 @@
 from agent.agent import Agent, ToolDefinition
 from tools.file_tools import read_file, list_files, edit_file, new_file
 from tools.schemas import ReadFileInput, ListFilesInput, EditFileInput, NewFileInput
-import sys
+# import sys # Unused import
 
 # Define tool definitions
 read_file_tool = ToolDefinition(
@@ -13,21 +13,26 @@ read_file_tool = ToolDefinition(
 
 list_files_tool = ToolDefinition(
     name="list_files",
-    description="List files and directories at a given path. If no path is provided, lists files in the current directory.",
+    description="List files and directories within a specified directory path (non-recursive). If no path is provided, lists contents of the current directory. Directories in the output list are appended with a '/'. Hidden files/directories are included.",
     input_schema=ListFilesInput,
     func=list_files
 )
 
 edit_file_tool = ToolDefinition(
     name="edit_file",
-    description="Make edits to a text file. Replaces 'old_str' with 'new_str' in the given file. 'old_str' and 'new_str' MUST be different from each other. If the file specified with path doesn't exist, it will be created.",
+    description="Edits a file by replacing the first occurrence of 'old_str' with 'new_str'. "
+                "'old_str' and 'new_str' must be different. "
+                "If 'old_str' is an empty string and the file exists, 'new_str' will be prepended to the file's content. "
+                "If the file specified by 'path' does not exist AND 'old_str' is an empty string, a new file will be created with 'new_str' as its content. "
+                "If 'old_str' is not empty and not found in the file, an error will be raised. "
+                "An error is also raised if the path is empty.",
     input_schema=EditFileInput,
     func=edit_file
 )
 
 new_file_tool = ToolDefinition(
     name="new_file",
-    description="Create a new file at the specified path with the given content. Overwrites if the file already exists.",
+    description="Create a new file at the specified path with the given content. If the file already exists, it will be overwritten. Parent directories will be created if they do not exist.",
     input_schema=NewFileInput,
     func=new_file
 )
